@@ -15,6 +15,7 @@ class Spider {
     const html = await superagent.get(this.url)
     return html.text
   }
+  
   async getHotSearchInfo(html: string) {
     const $ = cheerio.load(html)
     const arr: string[] = []
