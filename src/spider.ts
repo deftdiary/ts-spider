@@ -24,11 +24,11 @@ class Spider {
     return html.text
   }
 
-  writeFile(content: string) {
+  private writeFile(content: string) {
     fs.writeFileSync(this.filePath, content)
   }
 }
 
 const url = `http://top.sogou.com/hot/shishi_1.html`.trim()
-const anaylyzer = new Anaylyzer()
+const anaylyzer = Anaylyzer.getInstance()
 new Spider(url, anaylyzer)

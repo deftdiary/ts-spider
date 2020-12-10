@@ -18,6 +18,15 @@ interface ContentProps {
 }
 
 export default class Anaylyzer implements Analyzer {
+  private static instance: Analyzer
+
+  static getInstance() {
+    if(!Anaylyzer.instance) {
+      Anaylyzer.instance = new Anaylyzer()
+    }
+    return Anaylyzer.instance
+  }
+
   private getHotSearchInfo(html: string) {
     const $ = cheerio.load(html)
     let newsArr: NewsProps[] = []
@@ -44,7 +53,7 @@ export default class Anaylyzer implements Analyzer {
     return jsonRet
   }
 
-  generateJsonRet(jsonRet: JsonProps, filePath: string) {
+  private generateJsonRet(jsonRet: JsonProps, filePath: string) {
     let fileContent: ContentProps = {}
     if (fs.existsSync(filePath)) {
       fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
@@ -57,4 +66,5 @@ export default class Anaylyzer implements Analyzer {
     const fileContent = this.generateJsonRet(jsonRet, filePath)
     return JSON.stringify(fileContent)
   }
+  private constructor() {}
 }
