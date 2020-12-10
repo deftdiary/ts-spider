@@ -11,12 +11,12 @@ class Spider {
     this.getHotSearchInfo(html)
   }
 
-  async getRawHtml() {
+  private async getRawHtml() {
     const html = await superagent.get(this.url)
     return html.text
   }
   
-  async getHotSearchInfo(html: string) {
+  private async getHotSearchInfo(html: string) {
     const $ = cheerio.load(html)
     const arr: string[] = []
     const rank1 = $('.pub-list .p2')
