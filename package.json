@@ -7,7 +7,7 @@
     "start": "ts-node ./src/spider.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "deft",
   "license": "ISC",
   "devDependencies": {
     "@types/superagent": "^4.1.10",
