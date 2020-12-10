@@ -24,11 +24,13 @@ class Spider {
     this.initSiper()
   }
   private url = `http://top.sogou.com/hot/shishi_1.html`.trim()
+  private filePath = path.resolve(__dirname, '../data/result.json')
 
   private async initSiper() {
     const html = await this.getRawHtml()
-    const jsonRet = await this.getHotSearchInfo(html)
-    this.generateJsonRet(jsonRet)
+    const jsonRet = this.getHotSearchInfo(html)
+    const fileContent = this.generateJsonRet(jsonRet)
+    this.writeFile(JSON.stringify(fileContent))
   }
 
   private async getRawHtml() {
@@ -36,7 +38,7 @@ class Spider {
     return html.text
   }
 
-  private async getHotSearchInfo(html: string) {
+  private getHotSearchInfo(html: string) {
     const $ = cheerio.load(html)
     let newsArr: NewsProps[] = []
     const list = $('.pub-list li')
@@ -62,14 +64,17 @@ class Spider {
     return jsonRet
   }
 
-  async generateJsonRet(jsonRet: JsonProps) {
-    const filePath = path.resolve(__dirname, '../data/result.json')
+  generateJsonRet(jsonRet: JsonProps) {
     let fileContent: ContentProps = {}
-    if (fs.existsSync(filePath)) {
-      fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    if (fs.existsSync(this.filePath)) {
+      fileContent = JSON.parse(fs.readFileSync(this.filePath, 'utf-8'))
     }
     fileContent[jsonRet.time] = jsonRet.data
-    fs.writeFileSync(filePath, JSON.stringify(fileContent))
+    return fileContent
+  }
+
+  writeFile(content: string) {
+    fs.writeFileSync(this.filePath, content)
   }
 }
 
