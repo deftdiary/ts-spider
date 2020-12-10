@@ -3,11 +3,14 @@ import fs from 'fs'
 import path from 'path'
 import Anaylyzer from './analyzer'
 
+interface Analyzer {
+  analyze: (html: string, filePath: string) => string
+}
+
 class Spider {
-  constructor(private analyzer: any) {
+  constructor(private url: string, private analyzer: Analyzer) {
     this.initSipder()
   }
-  private url = `http://top.sogou.com/hot/shishi_1.html`.trim()
   private filePath = path.resolve(__dirname, '../data/result.json')
 
   private async initSipder() {
@@ -26,5 +29,6 @@ class Spider {
   }
 }
 
+const url = `http://top.sogou.com/hot/shishi_1.html`.trim()
 const anaylyzer = new Anaylyzer()
-const spider = new Spider(anaylyzer)
+new Spider(url, anaylyzer)
