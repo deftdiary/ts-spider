@@ -21,12 +21,12 @@ interface ContentProps {
 
 class Spider {
   constructor() {
-    this.initSiper()
+    this.initSipder()
   }
   private url = `http://top.sogou.com/hot/shishi_1.html`.trim()
   private filePath = path.resolve(__dirname, '../data/result.json')
 
-  private async initSiper() {
+  private async initSipder() {
     const html = await this.getRawHtml()
     const jsonRet = this.getHotSearchInfo(html)
     const fileContent = this.generateJsonRet(jsonRet)
