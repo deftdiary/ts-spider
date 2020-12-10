@@ -3,12 +3,17 @@ import cheerio from 'cheerio'
 
 class Spider {
   constructor() {
-    this.getRawHtml()
+    this.initSiper()
   }
   private url = `http://top.sogou.com/hot/shishi_1.html?fr=tph_righ/`.trim()
+  private async initSiper() {
+    const html = await this.getRawHtml()
+    this.getHotSearchInfo(html)
+  }
+
   async getRawHtml() {
-    const ret = await superagent.get(this.url)
-    this.getHotSearchInfo(ret.text)
+    const html = await superagent.get(this.url)
+    return html.text
   }
   async getHotSearchInfo(html: string) {
     const $ = cheerio.load(html)
