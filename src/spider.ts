@@ -23,7 +23,7 @@ class Spider {
   constructor() {
     this.initSiper()
   }
-  private url = `http://top.sogou.com/hot/shishi_1.html?fr=tph_righ/`.trim()
+  private url = `http://top.sogou.com/hot/shishi_1.html`.trim()
 
   private async initSiper() {
     const html = await this.getRawHtml()
