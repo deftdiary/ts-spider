@@ -1,5 +1,7 @@
 import fs from 'fs'
 import cheerio from 'cheerio'
+import { Analyzer } from './spider'
+
 interface NewsProps {
   title: string
   desc: string
@@ -15,7 +17,7 @@ interface ContentProps {
   [propName: number]: NewsProps[]
 }
 
-export default class Anaylyzer {
+export default class Anaylyzer implements Analyzer {
   private getHotSearchInfo(html: string) {
     const $ = cheerio.load(html)
     let newsArr: NewsProps[] = []

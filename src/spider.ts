@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import Anaylyzer from './analyzer'
 
-interface Analyzer {
+export interface Analyzer {
   analyze: (html: string, filePath: string) => string
 }
 
