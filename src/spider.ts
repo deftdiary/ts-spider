@@ -1,13 +1,12 @@
 import superagent from 'superagent'
 import fs from 'fs'
 import path from 'path'
-import Anaylyzer from './analyzer'
 
 export interface Analyzer {
   analyze: (html: string, filePath: string) => string
 }
 
-class Spider {
+export default class Spider {
   constructor(private url: string, private analyzer: Analyzer) {
     this.initSipder()
   }
@@ -29,6 +28,3 @@ class Spider {
   }
 }
 
-const url = `http://top.sogou.com/hot/shishi_1.html`.trim()
-const anaylyzer = Anaylyzer.getInstance()
-new Spider(url, anaylyzer)

@@ -42,7 +42,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var superagent_1 = __importDefault(require("superagent"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
-var analyzer_1 = __importDefault(require("./analyzer"));
 var Spider = /** @class */ (function () {
     function Spider(url, analyzer) {
         this.url = url;
@@ -83,6 +82,4 @@ var Spider = /** @class */ (function () {
     };
     return Spider;
 }());
-var url = "http://top.sogou.com/hot/shishi_1.html".trim();
-var anaylyzer = analyzer_1.default.getInstance();
-new Spider(url, anaylyzer);
+exports.default = Spider;
