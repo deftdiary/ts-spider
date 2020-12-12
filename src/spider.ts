@@ -24,7 +24,10 @@ export default class Spider {
   }
 
   private writeFile(content: string) {
-    fs.writeFileSync(this.filePath, content)
+    try {
+      fs.writeFileSync(this.filePath, content)
+    } catch (e) {
+      console.log(e) // df-log
+    }
   }
 }
-
