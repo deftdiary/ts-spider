@@ -56,7 +56,11 @@ export default class Anaylyzer implements Analyzer {
   private generateJsonRet(jsonRet: JsonProps, filePath: string) {
     let fileContent: ContentProps = {}
     if (fs.existsSync(filePath)) {
-      fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+      try {
+        fileContent = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+      } catch(e) {
+        console.log('读取错误,文件内容为空', e, 'continue..') // df-log
+      }
     }
     fileContent[jsonRet.time] = jsonRet.data
     return fileContent
