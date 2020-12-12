@@ -1,3 +1,4 @@
 .prettierignore
 .prettierrc
 node_modules/
+build/
