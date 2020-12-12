@@ -10,7 +10,7 @@ export default class Spider {
   constructor(private url: string, private analyzer: Analyzer) {
     this.initSipder()
   }
-  private filePath = path.resolve(__dirname, '../data/result.json')
+  private filePath = path.resolve(__dirname, '../../data/result.json')
 
   private async initSipder() {
     const html = await this.getRawHtml()

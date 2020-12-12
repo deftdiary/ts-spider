@@ -1,12 +1,21 @@
-import { Router, Request, Response } from 'express'
-import Spider from './spider'
-import Anaylyzer from './analyzer'
 import fs from 'fs'
 import path from 'path'
+import { Router, Request, Response, NextFunction } from 'express'
+import Spider from './utils/spider'
+import Anaylyzer from './utils/analyzer'
+import { getResponseData } from './utils/util';
 
-interface RequestWithBody extends Request {
-  body: {
-    [key: string]: string | undefined
+
+interface BodyRequest extends Request {
+  body: {[key: string]: string | undefined }
+}
+
+const checkLogin = (req: Request, res: Response, next: NextFunction) => {
+  const isLogin = req.session ? req.session.login : false
+  if (isLogin) {
+    next()
+  } else {
+    res.json(getResponseData(null, '请先登录'))
   }
 }
 
@@ -50,53 +59,43 @@ router.get('/login', (req: Request, res: Response) => {
   }
 })
 
-router.get('/logout', (req: RequestWithBody, res: Response) => {
+router.get('/logout', (req: BodyRequest, res: Response) => {
   if (req.session) {
     req.session.login = undefined
   }
-  res.redirect('/login')
+  res.json(getResponseData(true))
 })
 
-router.post('/login', (req: RequestWithBody, res: Response) => {
+router.post('/login', (req: BodyRequest, res: Response) => {
   const { password }  = req.body
   const isLogin = req.session ? req.session.login : undefined
 
   if (isLogin) {
-    res.redirect('/login')
+    res.json(getResponseData(false, '已经登录过了'))
   } else {
     if (password === '123' && req.session) {
       req.session.login = true
-      res.send('登陆成功')
+      res.json(getResponseData(true))
     } else {
-      res.send('登陆失败')
+      res.json(getResponseData(false, '登录失败'))
     }
   }
 })
 
-router.get('/getData', (req: RequestWithBody, res: Response) => {
-  const isLogin = req.session ? req.session.login : false
-  if (isLogin) {
-    const url = `http://top.sogou.com/hot/shishi_1.html`.trim()
-    const anaylyzer = Anaylyzer.getInstance()
-    new Spider(url, anaylyzer)
-    res.send('🕷️ 小蜘蛛获取数据成功')
-  } else {
-    res.send('请登陆后再使用小蜘蛛🕷️ ')
-  }
+router.get('/getData', checkLogin, (req: BodyRequest, res: Response) => {
+  const url = `http://top.sogou.com/hot/shishi_1.html`.trim()
+  const anaylyzer = Anaylyzer.getInstance()
+  new Spider(url, anaylyzer)
+  res.json(getResponseData(true))
 })
 
-router.get('/showData', (req: RequestWithBody, res: Response) => {
-  const isLogin = req.session ? req.session.login : false
-  if (isLogin) {
-    try{
-      const position = path.resolve(__dirname, '../data/result.json')
-      const result = fs.readFileSync(position, 'utf-8')
-      res.json(JSON.parse(result))
-    }catch(e){
-      res.send('尚未爬取到数据')
-    }
-  } else {
-    res.send('用户尚未登陆')
+router.get('/showData', checkLogin, (req: BodyRequest, res: Response) => {
+  try {
+    const position = path.resolve(__dirname, '../data/result.json')
+    const result = fs.readFileSync(position, 'utf-8')
+    res.json(getResponseData(JSON.parse(result)))
+  } catch (e) {
+    res.json(getResponseData(false, '数据不存在'))
   }
 })
 
