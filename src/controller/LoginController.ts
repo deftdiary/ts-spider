@@ -33,8 +33,8 @@ const logoutHtml = (
 )
 
 
-@controller
-class LoginController {
+@controller('/')
+export class LoginController {
 
   static isLogin(req: BodyRequest) {
     return !!(req.session ? req.session.login : false)

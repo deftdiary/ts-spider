@@ -1,4 +1,6 @@
-enum Methods {
+import { SpiderController, LoginController } from '../controller'
+
+export enum Methods {
   get = 'get',
   post = 'post',
   put = 'put',
@@ -7,7 +9,7 @@ enum Methods {
 
 function getRequestDecorator(type: Methods) {
   return function (path: string) {
-    return function (target: any, key: string) {
+    return function (target: SpiderController | LoginController, key: string) {
       Reflect.defineMetadata('path', path, target, key)
       Reflect.defineMetadata('method', type, target, key)
     }
