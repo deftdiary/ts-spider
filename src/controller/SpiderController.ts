@@ -20,16 +20,10 @@ const checkLogin = (req: Request, res: Response, next: NextFunction): void => {
   }
 }
 
-const testlog = (req: Request, res: Response, next: NextFunction) => {
-  console.log('test---')
-  next()
-}
-
 @controller('/')
 export class SpiderController {
   @get('/getData')
   @use(checkLogin)
-  @use(testlog)
   getData(req: BodyRequest, res: Response): void {
     const url = `http://top.sogou.com/hot/shishi_1.html`.trim()
     const anaylyzer = Anaylyzer.getInstance()
