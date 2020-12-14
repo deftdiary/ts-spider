@@ -12,7 +12,7 @@ const loginHtml = (
 <html>
   <body style="display:flex;justify-content:center;align-items:center;flex-direction:column;min-height:100vh;">
     <h2 style="text-align:center;margin-bottom:20px">欢迎来到小站</h2>
-    <form method="post" action="/login">
+    <form method="post" action="/api/login">
       <label for="pwInput" >请输入密码:</label>
       <input type="password" name="password" id="pwInput" />
       <button>登陆</button>
@@ -40,13 +40,19 @@ export class LoginController {
     return !!(req.session ? req.session.login : false)
   }
 
-  @post('/login')
+  @get('/api/isLogin')
+  isLogin(req: BodyRequest, res: Response): void {
+    const isLogin = LoginController.isLogin(req)
+    res.json(getResponseData(isLogin))
+  }
+
+  @post('/api/login')
   login(req: BodyRequest, res: Response): void {
     const { password } = req.body
     const isLogin = LoginController.isLogin(req)
 
     if (isLogin) {
-      res.json(getResponseData(false, '已经登录过了'))
+      res.json(getResponseData(true))
     } else {
       if (password === '123' && req.session) {
         req.session.login = true
