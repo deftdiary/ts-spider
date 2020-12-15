@@ -7,46 +7,46 @@ interface BodyRequest extends Request {
   body: {[key: string]: string | undefined }
 }
 
-const loginHtml = (
-`<!DOCTYPE html>
-<html>
-  <body style="display:flex;justify-content:center;align-items:center;flex-direction:column;min-height:100vh;">
-    <h2 style="text-align:center;margin-bottom:20px">欢迎来到小站</h2>
-    <form method="post" action="/api/login">
-      <label for="pwInput" >请输入密码:</label>
-      <input type="password" name="password" id="pwInput" />
-      <button>登陆</button>
-    </form>
-  </body>
-</html>`
-)
+// const loginHtml = (
+// `<!DOCTYPE html>
+// <html>
+//   <body style="display:flex;justify-content:center;align-items:center;flex-direction:column;min-height:100vh;">
+//     <h2 style="text-align:center;margin-bottom:20px">欢迎来到小站</h2>
+//     <form method="post" action="/api/login">
+//       <label for="pwInput" >请输入密码:</label>
+//       <input type="password" name="password" id="pwInput" />
+//       <button>登陆</button>
+//     </form>
+//   </body>
+// </html>`
+// )
 
-const logoutHtml = (
-`<!DOCTYPE html>
-<html>
-  <body style="display:flex;justify-content:center;align-items:center;flex-direction:column;min-height:100vh;">
-    <a href="/getData">启动小蜘蛛</a>
-    <a href="/showData">显示获取数据</a>
-    <a href='/logout'> 退出</a>
-  </body>
-</html>`
-)
+// const logoutHtml = (
+// `<!DOCTYPE html>
+// <html>
+//   <body style="display:flex;justify-content:center;align-items:center;flex-direction:column;min-height:100vh;">
+//     <a href="/getData">启动小蜘蛛</a>
+//     <a href="/showData">显示获取数据</a>
+//     <a href='/logout'> 退出</a>
+//   </body>
+// </html>`
+// )
 
 
-@controller('/')
+@controller('/api')
 export class LoginController {
 
   static isLogin(req: BodyRequest) {
     return !!(req.session ? req.session.login : false)
   }
 
-  @get('/api/isLogin')
+  @get('/isLogin')
   isLogin(req: BodyRequest, res: Response): void {
     const isLogin = LoginController.isLogin(req)
     res.json(getResponseData(isLogin))
   }
 
-  @post('/api/login')
+  @post('/login')
   login(req: BodyRequest, res: Response): void {
     const { password } = req.body
     const isLogin = LoginController.isLogin(req)
@@ -71,13 +71,13 @@ export class LoginController {
     res.json(getResponseData(true))
   }
 
-  @get('/')
-  home(req: BodyRequest, res: Response): void {
-    const isLogin = LoginController.isLogin(req)
-    if (isLogin) {
-      res.send(logoutHtml)
-    } else {
-      res.send(loginHtml)
-    }
-  }
+  // @get('/')
+  // home(req: BodyRequest, res: Response): void {
+  //   const isLogin = LoginController.isLogin(req)
+  //   if (isLogin) {
+  //     res.send(logoutHtml)
+  //   } else {
+  //     res.send(loginHtml)
+  //   }
+  // }
 }
